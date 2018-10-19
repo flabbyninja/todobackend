@@ -1,5 +1,9 @@
 version: '2.4'
 
+volumes:
+  public:
+    driver: local
+
 services:
   test:
     build:
@@ -21,6 +25,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - public:/public
     ports:
       - 8000:8000
     command:
@@ -28,6 +34,7 @@ services:
       - --http=0.0.0.0:8000
       - --module=todobackend.wsgi
       - --master
+      - --check-static=/public
   migrate:
     extends:
       service: release
