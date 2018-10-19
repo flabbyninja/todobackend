@@ -1,0 +1,13 @@
+# Virtualenv
+venv
+
+# Ignore SQLLite database files
+**/*.sqlite3
+
+# Ignore test output and private code coverage files
+**/*.xml
+**/.coverage
+
+# Ignore compiled python source files
+**/*.pyc
+**/pycache
