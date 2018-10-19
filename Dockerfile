@@ -30,7 +30,8 @@ FROM alpine
 LABEL application=todobackend
 
 # Install OS dependencies
-RUN apk add --no-cache python3 mariadb-client bash
+RUN apk add --no-cache python3 mariadb-client bash curl bats jq
+RUN pip3 install --upgrade pip
 
 # Create app user
 RUN addgroup -g 1000 app && \
