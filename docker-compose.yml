@@ -32,13 +32,16 @@ services:
       interval: 3s
       retries: 10
     ports:
-      - 8000:8000
+      - 8000
     command:
       - uwsgi
       - --http=0.0.0.0:8000
       - --module=todobackend.wsgi
       - --master
       - --check-static=/public
+      - --die-on-term
+      - --processes=4
+      - --threads=2
   acceptance:
     extends:
       service: release
