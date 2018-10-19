@@ -1,4 +1,9 @@
-.PHONY: test
+.PHONY: test release clean version
+
+export APP_VERSION ?= $(shell git rev-parse --short HEAD)
+
+version:
+	@ echo '{"VERSION": "$(APP_VERSION)"}'
 
 test:
 	docker-compose build --pull release
