@@ -27,4 +27,4 @@ publish:
 
 clean:
 	docker-compose down -v
-	docker images -q -f dangling=true -f label=application=todobackend | xargs -I ARGS docker rmi -f --no-prune ARGS
+	docker images -q -f dangling=true -f label=application-todobackend | xargs -I ARGS docker rmi -f --no-prune ARGS
