@@ -6,11 +6,33 @@ Parameters:
   ApplicationDesiredCount:
     Type: Number
     Description: Desired EC2 instance count
+  ApplicationImageId:
+    Type: String
+    Description: ECS Amazon Machine Image (AMI) ID
   ApplicationSubnets:
     Type: List<AWS::EC2::Subnet::Id>
     Description: Target subnets for EC2 instances
 
 Resources:
+  ApplicationAutoscalingLaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref ApplicationImageId
+      InstanceType: t2.micro
+      KeyName: sjdev
+      IamInstanceProfile: !Ref ApplicationAutoscalingInstanceProfile
+      SecurityGroups:
+        - !Ref ApplicationAutoscalingSecurityGroup
+      UserData:
+        Fn::Base64:
+          Fn::Sub: |
+            #!/bin/bash
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} \
+              --resource ApplicationAutoscalingLaunchConfiguration \
+              --region ${AWS::Region}
+            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} \
+              --resource ApplicationAutoscaling \
+              --region ${AWS::Region}
   ApplicationCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -27,4 +49,3 @@ Resources:
           - Key: Name
             Value: !Sub ${AWS::StackName}-ApplicationAutoscaling-instance
             PropagateAtLaunch: "true"
-            
