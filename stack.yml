@@ -55,6 +55,10 @@ Resources:
       ClusterName: todobackend-cluster
     ApplicationAutoscaling:
       Type: AWS::AutoScaling::AutoScalingGroup
+      CreationPolicy:
+      ResourceSignal:
+        Count: !Ref ApplicationDesiredCount
+        Timeout: PT15M
       Properties:
         LaunchConfigurationName: !Ref ApplicationAutoscalingLaunchConfiguration
         MinSize: 0
