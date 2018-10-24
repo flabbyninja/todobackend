@@ -2,8 +2,29 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Description: TodobackenTodobackend Application
 
+Parameters:
+  ApplicationDesiredCount:
+    Type: Number
+    Description: Desired EC2 instance count
+  ApplicationSubnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Target subnets for EC2 instances
+
 Resources:
   ApplicationCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: todobackend-cluster
+    ApplicationAutoscaling:
+      Type: AWS::AutoScaling::AutoScalingGroup
+      Properties:
+        LaunchConfigurationName: !Ref ApplicationAutoscalingLaunchConfiguration
+        MinSize: 0
+        MaxSize: 4
+        DesiredCapacity: !Ref ApplicationDesiredCount
+        VPCZoneIdentifier: !Ref ApplicationSubnets
+        Tags:
+          - Key: Name
+            Value: !Sub ${AWS::StackName}-ApplicationAutoscaling-instance
+            PropagateAtLaunch: "true"
+            
