@@ -1,23 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: Cloud9 Management Station
-
-Parameters:
-  EC2InstanceType:
-    Type: String
-    Description: EC2 instance type
-    Default: t2.micro
-  SubnetId:
-    Type: AWS::EC2::Subnet::Id
-    Description: Target subnet for instance
+Description: TodobackenTodobackend Application
 
 Resources:
-  ManagementStation:
-    Type: AWS::Cloud9::EnvironmentEC2
+  ApplicationCluster:
+    Type: AWS::ECS::Cluster
     Properties:
-      Description:
-        Fn::Sub: ${AWS::StackName} Station
-      AutomaticStopTimeMinutes: 10
-      InstanceType: !Ref EC2InstanceType
-      SubnetId:
-        Ref: SubnetId
+      ClusterName: todobackend-cluster
