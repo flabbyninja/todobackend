@@ -4,7 +4,7 @@ set -e -o pipefail
 # Inject AWS Secrets Managers Secrets
 # Read space delimited list of secret names from SECRETS environment variable
 echo "Processing secrets [${SECRETS}]..."
-read -r -a secrets << "$SECRETS"
+read -r -a secrets <<< "$SECRETS"
 for secret in "${secrets[@]}"
 do
     vars=$(aws secretsmanager get-secret-value --secret-id $secret \
